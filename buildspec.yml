@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - npm install -g pnpm
+      - pnpm install
+
+  pre_build:
+    commands:
+      - echo "Starting pre-build phase"
+      - echo "Running tests if any..."
+      - pnpm test || true
+
+  build:
+    commands:
+      - echo "Starting build phase"
+      - pnpm build
+
+  post_build:
+    commands:
+      - echo "Build completed"
+
+artifacts:
+  base-directory: .next
+  files:
+    - '**/*'
+  name: next-build-artifacts
+
+cache:
+  paths:
+    - 'node_modules/**/*'
+    - '.next/cache/**/*'
